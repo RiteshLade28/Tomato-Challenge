@@ -1,21 +1,25 @@
 const jwt = require("jsonwebtoken");
 const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcryptjs");
+const authRouter = express.Router();
+// const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
-const User = require("../model/userSchema");
+// const User = require("../model/userSchema");
+const Register = require("../controllers/Auth/Register");
+const Login = require("../controllers/Auth/Login");
 
-require("../db/conn");
-const TomatoData = require("../model/TomatoData");
+// require("../db/conn");
+// const TomatoData = require("../model/TomatoData");
 
-// router.get("/", (req, res) => {
-//   res.send("Hello from server router js");
+
+// authRouter.get("/", (req, res) => {
+//   res.send("Hello from server authRouter js");
 // });
 
-// router.post("/register", );
+authRouter.post("/register", Register);
+authRouter.post("/login", Login);
 
 //Farmer Tomato Data
-router.post("/submit-tomato-data", async (req, res) => {
+authRouter.post("/submit-tomato-data", async (req, res) => {
   try {
     const {
       name,
@@ -62,7 +66,7 @@ router.post("/submit-tomato-data", async (req, res) => {
 });
 
 //Getting the farmer submitted data
-router.get("/get-tomato-data", async (req, res) => {
+authRouter.get("/get-tomato-data", async (req, res) => {
   try {
     const { selectedOption } = req.query;
 
@@ -81,7 +85,7 @@ router.get("/get-tomato-data", async (req, res) => {
   }
 });
 
-router.delete("/delete-tomato/:id", async (req, res) => {
+authRouter.delete("/delete-tomato/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -103,6 +107,6 @@ router.delete("/delete-tomato/:id", async (req, res) => {
 });
 
 //Login Route
-// router.post("/signin", );
+// authRouter.post("/signin", );
 
-module.exports = router;
+module.exports = authRouter;

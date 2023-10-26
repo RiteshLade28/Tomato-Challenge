@@ -43,7 +43,7 @@ const Form = () => {
       selectedOption,
       currentTime,
     } = user;
-    const res = await fetch("/submit-tomato-data", {
+    const res = await fetch("/api/tomatoData/submit-tomato-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

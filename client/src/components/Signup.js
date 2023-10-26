@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { NavLink} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -12,9 +11,7 @@ const Signup = () => {
     cpassword: "",
   });
 
-
   let name, value;
-
 
   const handleInputs = (e) => {
     console.log(e);
@@ -27,17 +24,20 @@ const Signup = () => {
   const PostData = async (e) => {
     e.preventDefault();
     const { name, phone, password, cpassword } = user;
-  
-    const res = await fetch("/register", {
+
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name, phone, password, cpassword
-      })
+        name,
+        phone,
+        password,
+        cpassword,
+      }),
     });
-  
+
     if (res.status === 422) {
       window.alert("Invalid Registration");
       console.log("Invalid Registration");
@@ -52,14 +52,13 @@ const Signup = () => {
     }
   };
 
-
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="col-md-6 offset-md-3 mt-3">
             <h2>Farmer Register</h2>
-            <form method = "POST" className="signup-form mt-4">
+            <form method="POST" className="signup-form mt-4">
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
                   Name

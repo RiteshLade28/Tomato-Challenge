@@ -19,10 +19,13 @@ const DataDisplay = () => {
 
   useEffect(() => {
     try {
-      fetch(`/get-tomato-data?selectedOption=${selectedOption}`, {
-        method: "get",
-        headers: { "Content-Type": "application/json" },
-      })
+      fetch(
+        `/api/tomatoData/get-tomato-data?selectedOption=${selectedOption}`,
+        {
+          method: "get",
+          headers: { "Content-Type": "application/json" },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -74,7 +77,7 @@ const DataDisplay = () => {
   const handleDelete = async (id) => {
     try {
       // Make a DELETE request to the backend to delete the data
-      const response = await fetch(`/delete-tomato/${id}`, {
+      const response = await fetch(`/api/tomatoData/delete-tomato/${id}`, {
         method: "DELETE",
       });
 
@@ -97,7 +100,7 @@ const DataDisplay = () => {
   let serialNo = 1;
   return (
     <>
-      <div>
+      <div style={{margin: "30px 100px"}}>
         <div>
           <label>Select an option:</label>
           <select

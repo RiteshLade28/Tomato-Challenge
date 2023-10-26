@@ -1,39 +1,31 @@
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const express = require('express');
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const express = require("express");
 const app = express();
+const cors = require("cors");
+require("dotenv").config();
 
-dotenv.config({path: './config.env'})
-
-
-require('./db/conn');
-// const User = require('./model/userSchema');
+const PORT = process.env.PORT;
+const db = require("./db/conn");
 
 app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
+
 //Router Files
-app.use(require('./router/auth'));
-const PORT = process.env.PORT;
+app.use("/api/auth/", require("./router/AuthRouter"));
+app.use("/api/tomatoData/", require("./router/TomatoData"));
 
-
-
-// app.get('/about', (req, res) => {
-//     console.log("Hello My About");
-//   res.send("Hello from about server");
-// });
-
-app.get('/contact', (req, res) => {
-  res.send("Hello from contact server");
-});
-
-app.get('/signin', (req, res) => {
-  res.send("Hello from signin server");
-});
-
-app.get('/signup', (req, res) => {
-  res.send("Hello from signup server");
-});
 
 app.listen(PORT, () => {
   console.log(`server is running at port no ${PORT}`);
 });
-
