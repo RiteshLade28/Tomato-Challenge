@@ -12,7 +12,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav
+        style={{ padding: "10px 100px" }}
+        className="navbar navbar-expand-lg navbar-dark bg-dark"
+      >
         <NavLink className="navbar-brand ms-4" to="/">
           Tomato Challenge
         </NavLink>
@@ -37,7 +40,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item active">
               <NavLink className="nav-link me-3" to="/about">
-                Tomato Data
+                About
               </NavLink>
             </li>
             <li className="nav-item">
@@ -48,15 +51,61 @@ const Navbar = () => {
 
             {token === undefined ? (
               <>
-                <li className="nav-item">
-                  <NavLink className="nav-link me-3" to="/login">
+                <li className="nav-item dropdown">
+                  <NavLink
+                    className="nav-link dropdown-toggle"
+                    to="#"
+                    id="loginDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
                     Login
                   </NavLink>
+                  <div
+                    className="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="loginDropdown"
+                  >
+                    <NavLink className="dropdown-item" to="/login">
+                      Farmer Login
+                    </NavLink>
+                    <NavLink className="dropdown-item" to="/apmc">
+                      APMC Login
+                    </NavLink>
+                    <NavLink className="dropdown-item" to="/admin">
+                      Master Login
+                    </NavLink>
+                  </div>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link me-3" to="/signup">
-                    Register
-                  </NavLink>
+                  <li className="nav-item dropdown">
+                    <NavLink
+                      className="nav-link dropdown-toggle"
+                      to="#"
+                      id="loginDropdown"
+                      role="button"
+                      data-toggle="dropdown"
+                      // aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Register
+                    </NavLink>
+                    <div
+                      className="dropdown-menu dropdown-menu-right"
+                      aria-labelledby="loginDropdown"
+                    >
+                      <NavLink className="dropdown-item" to="/login">
+                        Farmer Register
+                      </NavLink>
+                      <NavLink className="dropdown-item" to="/apmc/register">
+                        APMC Register
+                      </NavLink>
+                      <NavLink className="dropdown-item" to="/admin">
+                        Master Register
+                      </NavLink>
+                    </div>
+                  </li>
                 </li>
               </>
             ) : (
