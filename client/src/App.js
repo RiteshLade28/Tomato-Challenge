@@ -19,12 +19,13 @@ import jwt_decode from "jwt-decode";
 import AdminNavbar from "./components/AdminNavbar";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import ApmcLogin from "./components/ApmcLogin";
-import AdminLogin from "./components/AdminLogin";
 import ApmcRegister from "./components/ApmcRegister";
+import AdminLogin from "./components/AdminLogin";
+import AdminRegister from "./components/AdminRegister";
 
 const App = () => {
   const token = Cookies.get("token");
-  let role;
+  let role = "";
 
   try {
     const decodedToken = jwt_decode(token);
@@ -60,6 +61,8 @@ const App = () => {
         />
         <Route exact path="/apmc/login" element={<ApmcLogin />} />
         <Route exact path="/apmc/register" element={<ApmcRegister />} />
+        <Route exact path="/admin/login" element={<AdminLogin />} />
+        <Route exact path="/admin/register" element={<AdminRegister/>} />
 
         <Route exact path="/admin" element={<AdminLogin />} />
         <Route path="/about" element={<About />} />

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 // import * as XLSX from "xlsx";
 // import { saveAs } from "file-saver";
 
 const DataDisplay = () => {
-  const [selectedOption, setSelectedOption] = useState("APMC-Pune");
+  // const [selectedOption, setSelectedOption] = useState("APMC-Pune");
   const [data, setData] = useState([]);
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
+  // const handleOptionChange = (e) => {
+  //   setSelectedOption(e.target.value);
+  // };
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -17,15 +19,20 @@ const DataDisplay = () => {
     return formattedDate;
   };
 
+  const token = Cookies.get("token");
+  const decodedToken = jwt_decode(token);
+  const apmcName = decodedToken.apmc.name;
+  console.log(apmcName);
+
   useEffect(() => {
     try {
-      fetch(
-        `/api/tomatoData/get-tomato-data?selectedOption=${selectedOption}`,
-        {
-          method: "get",
-          headers: { "Content-Type": "application/json" },
-        }
-      )
+      fetch(`/api/tomatoData/get-tomato-data?selectedOption=${apmcName}`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token here
+        },
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -49,12 +56,12 @@ const DataDisplay = () => {
     } catch (error) {
       console.error("Error in the fetch request: " + error);
     }
-  }, [selectedOption]);
+  }, []);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `/get-tomato-data?selectedOption=${selectedOption}`
+        `/get-tomato-data?selectedOption=${apmcName}`
       );
 
       if (response.ok) {
@@ -100,24 +107,9 @@ const DataDisplay = () => {
   let serialNo = 1;
   return (
     <>
-      <div style={{margin: "30px 100px"}}>
+      <div style={{ margin: "30px 100px" }}>
         <div>
-          <label>Select an option:</label>
-          <select
-            onChange={handleOptionChange}
-            value={selectedOption}
-            className="form-select"
-            style={{ height: "40px", width: "200px" }}
-          >
-            <option value="">Select APMC</option>
-            <option value="APMC-Jaysingpur">APMC Jaysingpur</option>
-            <option value="APMC-Pune">APMC Pune</option>
-            <option value="APMC-Satara">APMC Satara</option>
-            <option value="APMC-Kolhapur">APMC Kolhapur</option>
-          </select>
-        </div>
-        <div>
-          <h3>Tomato Data for {selectedOption}</h3>
+          <h3>Tomato Data for {apmcName}</h3>
           <div className="table-responsive">
             <div></div>
             <table className="table table-bordered table-striped">

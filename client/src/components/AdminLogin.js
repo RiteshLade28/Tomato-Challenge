@@ -6,35 +6,33 @@ import jwtDecode from "jwt-decode";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginUser = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/adminLogin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        phone,
+        email,
         password,
       }),
     });
-    const data = await res.json();
-    Cookies.set("token", data.token);
-    const role = jwtDecode(data.token).role;
 
+    const data = await res.json();
     if (data.error) {
       // window.alert("Invalid Credentials");
       toast.error("Invalid Credentials");
     } else {
+      Cookies.set("token", data.token);
+      const role = jwtDecode(data.token).role;
       // window.alert("Login Successful");
       toast.success("Login Successful");
-      if (role === "admin") {
-        navigate("/admin/dashboard");
-      } else navigate("/form");
+      navigate("/admin/dashboard");
     }
   };
 
@@ -46,17 +44,17 @@ const AdminLogin = () => {
           <form method="POST" className="login-form mt-4">
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
-                Phone
+                email
               </label>
               <input
                 type="tel"
-                id="phone"
-                name="phone"
+                id="email"
+                name="email"
                 className="form-control"
                 autoComplete="off"
                 placeholder="Your Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 pattern="[0-9]{10}"
                 required
               />

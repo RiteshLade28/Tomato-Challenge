@@ -1,38 +1,17 @@
 const mongoose = require("mongoose");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-// Define the APMC schema
-const apmcSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     unique: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
-  pinCode: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  district: {
-    type: String,
-    required: true,
-  },
-  commodities: [
-    {
-      type: String,
-    },
-  ],
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -46,9 +25,17 @@ const apmcSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  appointedBy: {
+    type: String,
+    required: true,
+  },
+  dateAppointed: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-apmcSchema.pre("save", async function (next) {
+adminSchema.pre("save", async function (next) {
   // console.log("hi from inside");
   if (this.isModified("password")) {
     try {
@@ -62,7 +49,7 @@ apmcSchema.pre("save", async function (next) {
 });
 
 //We are generating Token
-apmcSchema.methods.generateAuthToken = async function () {
+adminSchema.methods.generateAuthToken = async function () {
   try {
     let token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
     this.tokens = this.tokens.concat({ token: token });
@@ -73,7 +60,6 @@ apmcSchema.methods.generateAuthToken = async function () {
   }
 };
 
-// Create a model from the schema
-const APMC = mongoose.model("APMC", apmcSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
-module.exports = APMC;
+module.exports = Admin;

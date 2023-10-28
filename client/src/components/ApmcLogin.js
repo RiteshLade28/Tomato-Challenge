@@ -6,19 +6,19 @@ import jwtDecode from "jwt-decode";
 
 const Login = (roleState, setRole) => {
   const navigate = useNavigate();
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginUser = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/apmcLogin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        phone,
+        email,
         password,
       }),
     });
@@ -32,10 +32,7 @@ const Login = (roleState, setRole) => {
     } else {
       // window.alert("Login Successful");
       toast.success("Login Successful");
-      if (role === "admin") {
-        navigate("/admin/dashboard");
-        setRole("admin");
-      } else navigate("/form");
+      navigate("/dataDisplay");
     }
   };
 
@@ -47,17 +44,17 @@ const Login = (roleState, setRole) => {
           <form method="POST" className="login-form mt-4">
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
-                Phone
+                Email
               </label>
               <input
                 type="tel"
-                id="phone"
-                name="phone"
+                id="email"
+                name="email"
                 className="form-control"
                 autoComplete="off"
                 placeholder="Your Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 pattern="[0-9]{10}"
                 required
               />

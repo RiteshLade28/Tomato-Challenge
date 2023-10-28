@@ -70,11 +70,11 @@ const Navbar = () => {
                     <NavLink className="dropdown-item" to="/login">
                       Farmer Login
                     </NavLink>
-                    <NavLink className="dropdown-item" to="/apmc">
+                    <NavLink className="dropdown-item" to="/apmc/login">
                       APMC Login
                     </NavLink>
                     <NavLink className="dropdown-item" to="/admin">
-                      Master Login
+                      Admin Login
                     </NavLink>
                   </div>
                 </li>
@@ -95,14 +95,14 @@ const Navbar = () => {
                       className="dropdown-menu dropdown-menu-right"
                       aria-labelledby="loginDropdown"
                     >
-                      <NavLink className="dropdown-item" to="/login">
+                      <NavLink className="dropdown-item" to="/signup">
                         Farmer Register
                       </NavLink>
                       <NavLink className="dropdown-item" to="/apmc/register">
                         APMC Register
                       </NavLink>
-                      <NavLink className="dropdown-item" to="/admin">
-                        Master Register
+                      <NavLink className="dropdown-item" to="/admin/register">
+                        Admin Register
                       </NavLink>
                     </div>
                   </li>
