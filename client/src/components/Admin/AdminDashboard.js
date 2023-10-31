@@ -9,6 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Select,
   CardMedia,
 } from "@material-ui/core";
 import {
@@ -161,27 +162,140 @@ const renderActiveShape = (props: any) => {
 
 const Dashboard = () => {
   const classes = useStyles();
-  //   const [totalOrders, setTotalOrders] = useState();
-  //   const [totalRevenue, setTotalRevenue] = useState();
-  //   const [totalCustomers, setTotalCustomers] = useState();
-  //   const [pendingOrders, setPendingOrders] = useState();
-  const [latestProducts, setLatestProducts] = useState([]);
-  //   const [orders, setOrders] = useState([]);
-  //   const [salesData, setSalesData] = useState([]);
-  //   const [productData, setProductData] = useState([]);
-
-  const tomatoData = [
-    { month: "Jan", demand: 100, supply: 120 },
-    { month: "Feb", demand: 110, supply: 130 },
-    { month: "Mar", demand: 105, supply: 125 },
-    { month: "Apr", demand: 115, supply: 135 },
-    { month: "May", demand: 120, supply: 140 },
-    { month: "Jun", demand: 150, supply: 110 }, // Increased demand, decreased supply
-    { month: "Jul", demand: 155, supply: 105 }, // Increased demand, decreased supply
-    { month: "Aug", demand: 140, supply: 160 },
-    { month: "Sep", demand: 145, supply: 165 },
-    { month: "Oct", demand: 150, supply: 170 },
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
+  const [apmcCount, setApmcCount] = useState(0);
+  const [farmerCount, setFarmerCount] = useState(0);
+  const [transactionCount, setTransactionCount] = useState(0);
+  const [totalWeight, setTotalWeight] = useState(0);
+  const [apmcMonthlyData, setApmcMonthlyData] = useState([]);
+
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [wholeData, setWholeData] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(
+    months[new Date().getFullYear()]
+  );
+  const [yearlyData, setYearlyData] = useState([]);
+  // Define a function to handle year selection
+
+  console.log("months", month);
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+    
+  };
+
+  useEffect(() => {
+    // Fetch data when the selected year changes
+    fetchDataForYear(selectedYear);
+  }, [selectedYear]);
+
+  const fetchDataForYear = (year) => {
+    // Send a request to your backend to fetch data for the selected year
+    const token = Cookies.get("token");
+    fetch(`/api/tomatoData/get-transactions?year=${year}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token here
+      },
+    })
+      .then((response) => {
+        setYearlyData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    try {
+      fetch(`/api/tomatoData/get-transactions`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token here
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((jsonData) => {
+          console.log(jsonData);
+        })
+        .catch((error) => {
+          console.error("Error fetching or processing data: " + error);
+        });
+    } catch (error) {
+      console.error("Error in the fetch request: " + error);
+    }
+    try {
+      fetch(`/api/tomatoData/get-stats`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token here
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((jsonData) => {
+          setApmcCount(jsonData.uniqueApmcs);
+          setFarmerCount(jsonData.uniqueFarmers);
+          setTransactionCount(jsonData.transactionCount);
+          setTotalWeight(jsonData.totalWeightInQuintal);
+        })
+        .catch((error) => {
+          console.error("Error fetching or processing data: " + error);
+        });
+    } catch (error) {
+      console.error("Error in the fetch request: " + error);
+    }
+    try {
+      fetch(`/api/apmcData/getTomatoStocks`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token here
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((jsonData) => {
+          setWholeData(jsonData);
+          setApmcMonthlyData(jsonData[new Date().getMonth()].data);
+          console.log(jsonData);
+        })
+        .catch((error) => {
+          console.error("Error fetching or processing data: " + error);
+        });
+    } catch (error) {
+      console.error("Error in the fetch request: " + error);
+    }
+  }, []);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
@@ -221,7 +335,7 @@ const Dashboard = () => {
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  <AllInclusiveIcon />
+                  Σ
                 </Avatar>
               }
             />
@@ -229,7 +343,7 @@ const Dashboard = () => {
               <Typography variant="h6" gutterBottom>
                 Total APMC
               </Typography>
-              <Typography variant="h4">4</Typography>
+              <Typography variant="h4">{apmcCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -246,7 +360,7 @@ const Dashboard = () => {
               <Typography variant="h6" gutterBottom>
                 Total Farmers
               </Typography>
-              <Typography variant="h4">50</Typography>
+              <Typography variant="h4">{farmerCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -255,15 +369,15 @@ const Dashboard = () => {
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  KG
+                  Σ
                 </Avatar>
               }
             />
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Total Tomatoes
+                Total Transactions
               </Typography>
-              <Typography variant="h4">1200</Typography>
+              <Typography variant="h4">{transactionCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -272,20 +386,20 @@ const Dashboard = () => {
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  KG
+                  q
                 </Avatar>
               }
             />
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Total Demand
+                Total Weight(in q)
               </Typography>
-              <Typography variant="h4">1000</Typography>
+              <Typography variant="h4">{totalWeight}</Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item xs={6} className={classes.chartContainer}>
+        <Grid item xs={12} className={classes.chartContainer}>
           <Card>
             <CardContent>
               <Grid container spacing={2}>
@@ -297,8 +411,41 @@ const Dashboard = () => {
                   >
                     Monthly Tomato Demand and Supply (in KG)
                   </Typography>
-                  <BarChart width={600} height={300} data={tomatoData}>
-                    <XAxis dataKey="month" />
+
+                  {/* Dropdown for year selection */}
+                  <Select
+                    native
+                    value={selectedYear}
+                    onChange={handleYearChange}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    <option value={new Date().getFullYear()}>
+                      {new Date().getFullYear()}
+                    </option>
+                    <option value={2022}>2022</option>
+                    <option value={2021}>2021</option>
+                    <option value={2020}>2020</option>
+                  </Select>
+                  <Select
+                    native
+                    value={months[month]}
+                    onChange={(e) => {
+                      const selectedMonth = e.target.value;
+                      setMonth(months[selectedMonth]); // Set the selected month in the state
+                      setApmcMonthlyData(wholeData[selectedMonth].data); // You can call your data-fetching function here
+                    }}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    <option value="">{months[new Date().getMonth()]}</option>
+                    {months.map((monthName, index) => (
+                      <option value={index} key={monthName}>
+                        {monthName}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <BarChart width={1200} height={300} data={apmcMonthlyData}>
+                    <XAxis dataKey="apmc" type="category" />
                     <YAxis />
                     <CartesianGrid stroke="#ccc" />
                     <Tooltip />
@@ -310,10 +457,10 @@ const Dashboard = () => {
                       name="Demand"
                     />
                     <Bar
-                      dataKey="supply"
+                      dataKey="stocks"
                       fill="#097969"
                       barSize={20}
-                      name="Supply"
+                      name="Stocks"
                     />
                   </BarChart>
                 </Grid>
@@ -321,7 +468,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6} className={classes.chartContainer}>
+        {/* <Grid item xs={6} className={classes.chartContainer}>
           <Card>
             <CardContent>
               <Grid container spacing={2}>
@@ -357,8 +504,8 @@ const Dashboard = () => {
               </Grid>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} className={classes.tableContainer}>
+        </Grid> */}
+        {/* <Grid item xs={12} sm={4} className={classes.tableContainer}>
           <Paper style={{ padding: "20px" }}>
             <Typography variant="h6" className={classes.tableTitle}>
               Latest Products
@@ -392,7 +539,7 @@ const Dashboard = () => {
               </Card>
             ))}
           </Paper>
-        </Grid>
+        </Grid> */}
         {/* <Grid item xs={12} sm={8} className={classes.tableContainer}>
           <TableContainer component={Card} style={{ padding: "20px" }}>
             <Typography variant="h6" className={classes.tableTitle}>
@@ -426,6 +573,50 @@ const Dashboard = () => {
             </Table>
           </TableContainer>
         </Grid> */}
+
+        {/* <div style={{ margin: "30px 100px" }}>
+          <div>
+            <h3>There are total {apmcCount} APMC market in India</h3>
+            <div className="table-responsive">
+              <table className="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Serial No</th>
+                    <th>APMC Name</th>
+                    <th>Location</th>
+                    <th>State</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Trade Price</th>
+                    <th>Request Tomato</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apmcList.map((item) => (
+                    <tr key={item._id}>
+                      <td>{serialNo++}</td>
+                      <td>{item.name}</td>
+                      <td>{item.location}</td>
+                      <td>{item.state}</td>
+                      <td>{item.phone}</td>
+                      <td>{item.email}</td>
+                      <td>₹{item.currentPrice}</td>
+
+                      <td>
+                        <button
+                          className="btn btn-success"
+                          onClick={handleOpenDialog}
+                        >
+                          Submit
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> */}
       </Grid>
     </div>
   );

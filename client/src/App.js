@@ -22,52 +22,53 @@ import ApmcLogin from "./components/ApmcLogin";
 import ApmcRegister from "./components/ApmcRegister";
 import AdminLogin from "./components/AdminLogin";
 import AdminRegister from "./components/AdminRegister";
+import FarmerTransactions from "./components/FarmerTransactions";
+import VendorLogin from "./components/VendorLogin";
+import VendorRegister from "./components/VendorRegister";
+import ApmcList from "./components/ApmcList";
+import ApmcTomatoReq from "./components/ApmcTomatoReq";
+import VendorTomatoReq from "./components/VendorTomatoReq";
 
 const App = () => {
-  const token = Cookies.get("token");
-  let role = "";
-
-  try {
-    const decodedToken = jwt_decode(token);
-    if (decodedToken && decodedToken.role) {
-      role = decodedToken.role;
-    } else {
-      role = "defaultRole";
-    }
-  } catch (error) {
-    console.error("Error decoding the token:", error);
-    role = "defaultRole";
-  }
-
-  const [roleState, setRole] = useState(role);
-  console.log(roleState);
-
   return (
     <>
-      {role === "admin" ? (
-        <AdminNavbar roleState={roleState} setRole={setRole} />
-      ) : (
-        <Navbar roleState={roleState} setRole={setRole} />
-      )}
+      {/* {role === "admin" ? <AdminNavbar /> : <Navbar role setRole/>} */}
+      <Navbar />
       <Routes>
+        {/* Login Routes */}
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/form" element={<Form />} />
-        <Route path="/datadisplay" element={<Farmerdata />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/login"
-          element={<Login roleState={roleState} setRole={setRole} />}
-        />
+
         <Route exact path="/apmc/login" element={<ApmcLogin />} />
         <Route exact path="/apmc/register" element={<ApmcRegister />} />
-        <Route exact path="/admin/login" element={<AdminLogin />} />
-        <Route exact path="/admin/register" element={<AdminRegister/>} />
 
         <Route exact path="/admin" element={<AdminLogin />} />
+        <Route exact path="/admin/register" element={<AdminRegister />} />
+
+        <Route exact path="/vendor/login" element={<VendorLogin />} />
+        <Route exact path="/vendor/register" element={<VendorRegister />} />
+
+        {/* Default Routes */}
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<PageNotFound />} />
+
+        {/* APMC Route */}
+        <Route path="/apmc/addSupply" element={<Form />} />
+        <Route path="/apmc/dashboard" element={<Farmerdata />} />
+        <Route path="/apmc/tomatoRequest" element={<ApmcTomatoReq />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        {/* Farmer Routes */}
+        <Route path="/farmer/transactions" element={<FarmerTransactions />} />
+
+        {/* Vendor Routes */}
+        <Route exact path="/apmc/list" element={<ApmcList />} />
+        <Route exact path="/vendor/tomatoRequested" element={<VendorTomatoReq />} />
+      
       </Routes>
       <Footer />
     </>

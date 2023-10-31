@@ -4,34 +4,33 @@ import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 
-const AdminLogin = () => {
+const VendorLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginUser = async (e) => {
+  const loginVendor = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/api/auth/adminLogin", {
+    const res = await fetch("/api/auth/vendorLogin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
+        phone,
         password,
       }),
     });
-
     const data = await res.json();
+
     if (data.error) {
-      // window.alert("Invalid Credentials");
       toast.error("Invalid Credentials");
     } else {
       Cookies.set("token", data.token);
-      Cookies.set("role", "admin");
+      Cookies.set("role", "vendor");
       toast.success("Login Successful");
-      navigate("/admin/dashboard");
+      navigate("/apmc/list");
     }
   };
 
@@ -39,21 +38,21 @@ const AdminLogin = () => {
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 mt-3">
-          <h2>Admin Login</h2>
+          <h2>Vendor Login</h2>
           <form method="POST" className="login-form mt-4">
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
-                Email
+                Phone
               </label>
               <input
-                type="tel"
-                id="email"
-                name="email"
+                type="number"
+                id="phone"
+                name="phone"
                 className="form-control"
                 autoComplete="off"
                 placeholder="Your Number"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 pattern="[0-9]{10}"
                 required
               />
@@ -81,12 +80,12 @@ const AdminLogin = () => {
                 id="signin"
                 className="btn btn-primary"
                 value="Log In"
-                onClick={loginUser}
+                onClick={loginVendor}
               />
             </div>
           </form>
           <p className="mt-3">
-            New user? <NavLink to="/signup">Register here</NavLink>
+            New Vendor? <NavLink to="/signup">Register here</NavLink>
           </p>
         </div>
       </div>
@@ -95,4 +94,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default VendorLogin;

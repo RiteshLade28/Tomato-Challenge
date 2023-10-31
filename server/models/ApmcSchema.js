@@ -30,6 +30,10 @@ const apmcSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  currentPrice: {
+    type: Number, // You can change the type to match your data structure
+    default: 0, // You can set a default value if needed
+  },
   email: {
     type: String,
     required: true,

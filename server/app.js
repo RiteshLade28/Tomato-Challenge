@@ -47,6 +47,11 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   require("./router/TomatoData")
 );
+app.use(
+  "/api/apmcData/",
+  passport.authenticate("jwt", { session: false }),
+  require("./router/ApmcRouter")
+);
 
 app.listen(PORT, () => {
   console.log(`server is running at port no ${PORT}`);

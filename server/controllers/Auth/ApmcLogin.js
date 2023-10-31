@@ -24,8 +24,8 @@ const Login = async (req, res) => {
           id: apmcLogin._id,
           name: apmcLogin.name, // Add the name to the payload
           email: apmcLogin.email, // Add the email to the payload
-          role: "apmc",
         },
+        role: "apmc",
       };
 
       // Sign the token

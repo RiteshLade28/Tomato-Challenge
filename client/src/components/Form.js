@@ -103,7 +103,7 @@ const Form = () => {
                   </div>
                   <div className="mb-3">
                     <label htmlFor="phoneNumber" className="form-label">
-                      Phone Number:
+                      Farmer Phone Number:
                     </label>
                     <input
                       type="tel"
@@ -131,29 +131,9 @@ const Form = () => {
                       required
                     />
                   </div>
-
-                  <div className="mb-3">
-                    <label htmlFor="selectedOption" className="form-label">
-                      Select an option:
-                    </label>
-                    <select
-                      className="form-select"
-                      id="selectedOption"
-                      name="selectedOption"
-                      value={user.selectedOption}
-                      onChange={handleInputs}
-                      required
-                    >
-                      <option value="">Select an option</option>
-                      <option value="APMC-Jaysingpur">APMC Jaysingpur</option>
-                      <option value="APMC-Pune">APMC Pune</option>
-                      <option value="APMC-Satara">APMC Satara</option>
-                      <option value="APMC-Kolhapur">APMC Kolhapur</option>
-                    </select>
-                  </div>
                   <div className="mb-3">
                     <label htmlFor="weight" className="form-label">
-                      Tomato (in kgs):
+                      Tomato (in Quintal):
                     </label>
                     <input
                       type="number"
@@ -167,7 +147,7 @@ const Form = () => {
                   </div>
                   <div className="mb-3">
                     <label htmlFor="weight" className="form-label">
-                      Expected Tomato Price (per kg):
+                      Trade Price (in Rs./Quintal):
                     </label>
                     <input
                       type="number"
@@ -177,19 +157,6 @@ const Form = () => {
                       value={user.price}
                       onChange={handleInputs}
                       required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="currentTime" className="form-label">
-                      Current Time:
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="currentTime"
-                      name="currentTime"
-                      value={currentTime}
-                      readOnly
                     />
                   </div>
                   <div className="d-grid">

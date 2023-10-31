@@ -5,10 +5,14 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 const Navbar = () => {
-  const token = Cookies.get("token");
-  console.log(token);
-
-  // const decodedToken = jwt_decode(token);
+  let token, role;
+  try {
+    token = jwt_decode(Cookies.get("token"));
+    role = token.role;
+  } catch (err) {
+    role = "defaultRole";
+  }
+  console.log(role);
   const navigate = useNavigate();
   return (
     <>
@@ -49,7 +53,7 @@ const Navbar = () => {
               </NavLink>
             </li>
 
-            {token === undefined ? (
+            {role === "defaultRole" ? (
               <>
                 <li className="nav-item dropdown">
                   <NavLink
@@ -72,6 +76,9 @@ const Navbar = () => {
                     </NavLink>
                     <NavLink className="dropdown-item" to="/apmc/login">
                       APMC Login
+                    </NavLink>
+                    <NavLink className="dropdown-item" to="/vendor/login">
+                      Vendor Login
                     </NavLink>
                     <NavLink className="dropdown-item" to="/admin">
                       Admin Login
@@ -101,11 +108,46 @@ const Navbar = () => {
                       <NavLink className="dropdown-item" to="/apmc/register">
                         APMC Register
                       </NavLink>
+                      <NavLink className="dropdown-item" to="/vendor/register">
+                        Vendor Register
+                      </NavLink>
                       <NavLink className="dropdown-item" to="/admin/register">
                         Admin Register
                       </NavLink>
                     </div>
                   </li>
+                </li>
+              </>
+            ) : role === "apmc" ? (
+              <>
+                <li></li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/addSupply">
+                    Add Supply
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/dashboard">
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/tomatoRequest">
+                    Requests
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link me-3"
+                    to="/"
+                    onClick={() => {
+                      Cookies.remove("token");
+                      Cookies.set("role", "defaultRole");
+                      // navigate("/");
+                    }}
+                  >
+                    Logout
+                  </NavLink>
                 </li>
               </>
             ) : (
@@ -115,6 +157,7 @@ const Navbar = () => {
                   to="/"
                   onClick={() => {
                     Cookies.remove("token");
+                    Cookies.set("role", "defaultRole");
                     // navigate("/");
                   }}
                 >

@@ -1,4 +1,4 @@
-const TomatoData = require("../../models/TomatoData");
+const TomatoData = require("../../models/TomatoTransactionSchema");
 
 const DeleteData = async (req, res) => {
   try {

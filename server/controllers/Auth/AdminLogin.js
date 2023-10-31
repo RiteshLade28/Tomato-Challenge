@@ -29,8 +29,8 @@ const AdminLogin = async (req, res) => {
           id: adminLogin._id,
           name: adminLogin.name, // Add the name to the payload
           email: adminLogin.email, // Add the email to the payload
-          role: "admin",
         },
+        role: "admin",
       };
 
       // Sign the token

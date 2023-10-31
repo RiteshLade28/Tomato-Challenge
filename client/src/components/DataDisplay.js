@@ -1,17 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { red } from "@mui/material/colors";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import {
+  Grid,
+  Typography,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Select,
+  CardMedia,
+} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Avatar,
+  IconButton,
+  Paper,
+} from "@mui/material";
 // import * as XLSX from "xlsx";
 // import { saveAs } from "file-saver";
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "20px 100px",
+    padding: "20px",
+  },
+  summaryItem: {
+    border: "1px solid #ccc",
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(2),
+  },
+  tableContainer: {
+    marginTop: theme.spacing(1),
+  },
+  chartContainer: {
+    marginTop: theme.spacing(1),
+  },
+  summaryItem: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row-reverse",
+    height: "160px",
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+}));
 const DataDisplay = () => {
-  // const [selectedOption, setSelectedOption] = useState("APMC-Pune");
+  const classes = useStyles();
   const [data, setData] = useState([]);
-
-  // const handleOptionChange = (e) => {
-  //   setSelectedOption(e.target.value);
-  // };
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -22,7 +67,7 @@ const DataDisplay = () => {
   const token = Cookies.get("token");
   const decodedToken = jwt_decode(token);
   const apmcName = decodedToken.apmc.name;
-  console.log(apmcName);
+  // console.log(apmcName);
 
   useEffect(() => {
     try {
@@ -40,15 +85,8 @@ const DataDisplay = () => {
           return response.json();
         })
         .then((jsonData) => {
-          console.log(jsonData);
-
-          // Format the date field in the fetched data
-          const formattedData = jsonData.map((item) => ({
-            ...item,
-            todaydate: formatDateString(item.todaydate),
-          }));
-          // console.log(formattedData);
-          setData(formattedData);
+          console.log("jsonData", jsonData);
+          setData(jsonData);
         })
         .catch((error) => {
           console.error("Error fetching or processing data: " + error);
@@ -108,7 +146,83 @@ const DataDisplay = () => {
   return (
     <>
       <div style={{ margin: "30px 100px" }}>
-        <div>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center" gutterBottom>
+              {apmcName} Dashboard
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card className={classes.summaryItem}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    Σ
+                  </Avatar>
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Total Supply
+                </Typography>
+                <Typography variant="h4">15</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card className={classes.summaryItem}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    <PeopleAltIcon />
+                  </Avatar>
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Total Demand
+                </Typography>
+                <Typography variant="h4">40</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card className={classes.summaryItem}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    Σ
+                  </Avatar>
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Total Farmers
+                </Typography>
+                <Typography variant="h4">1000</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card className={classes.summaryItem}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    q
+                  </Avatar>
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Total Transactions
+                </Typography>
+                <Typography variant="h4">65</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        <div style={{ marginTop: "20px" }}>
           <h3>Tomato Data for {apmcName}</h3>
           <div className="table-responsive">
             <div></div>
@@ -116,45 +230,24 @@ const DataDisplay = () => {
               <thead>
                 <tr>
                   <th>Serial No</th>
-                  <th>Name</th>
+                  <th>Farmer Name</th>
                   <th>Contact</th>
                   <th>Date</th>
                   {/* <th>Time</th> */}
                   <th>Weight</th>
-                  <th>Expected Price</th>
-                  <th>Verify</th>
-                  <th>Delete</th>
+                  <th>Trade Price</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item) => (
-                  <tr key={item._id}>
+                  <tr key={item.apmcMarket._id}>
                     <td>{serialNo++}</td>
-                    <td>{item.name}</td>
-                    <td>{item.phoneNumber}</td>
-                    <td>{item.todaydate}</td>
+                    <td>{item.farmer.name}</td>
+                    <td>{item.farmer.phone}</td>
+                    <td>{new Date(item.date).toISOString().split("T")[0]}</td>
                     {/* <td>{item.currentTime}</td> */}
                     <td>{item.weight}</td>
                     <td>{item.price}</td>
-                    <td>
-                      <button
-                        className="btn btn-success"
-                        onClick={() =>
-                          toast.success("Data Submitted Successfully")
-                        }
-                      >
-                        Submit
-                      </button>
-                    </td>
-                    <td>
-                      {/* Add the delete button */}
-                      <button
-                        onClick={() => handleDelete(item._id)}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>

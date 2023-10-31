@@ -1,36 +1,34 @@
 // import React from "react";
-const User = require("../../models/userSchema");
+const Vendor = require("../../models/VendorSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const Login = async (req, res) => {
   try {
-    let token;
+    // let token;
     const { phone, password } = req.body;
-    if (phone === "admin" && password === "admin") {
-      token = jwt.sign({ phone: phone, role: "admin" }, process.env.SECRET_KEY);
-      return res.json({ token, message: "Admin Signed In Successfully." });
-    }
+    console.log(req.body);
+
     if (!phone || !password) {
       return res
         .status(400)
         .json({ error: "Please fill in the data properly." });
     }
 
-    const userLogin = await User.findOne({ phone: phone });
+    const vendorLogin = await Vendor.findOne({ phone: phone });
 
-    // console.log(userLogin);
+    console.log(vendorLogin);
 
-    if (userLogin) {
-      const isMatch = await bcrypt.compare(password, userLogin.password);
+    if (vendorLogin) {
+      const isMatch = await bcrypt.compare(password, vendorLogin.password);
 
       const payload = {
-        user: {
-          id: userLogin._id,
-          name: userLogin.name, // Add the name to the payload
-          phone: userLogin.phone, // Add the phone to the payload
+        vendor: {
+          id: vendorLogin._id,
+          name: vendorLogin.name, // Add the name to the payload
+          phone: vendorLogin.phone, // Add the phone to the payload
+          role: "vendor",
         },
-        role: "farmer",
       };
 
       // Sign the token
@@ -47,7 +45,7 @@ const Login = async (req, res) => {
             httpOnly: true,
           });
 
-          res.json({ token, message: "User Signed In Successfully." });
+          res.json({ token, message: "Vendor Signed In Successfully." });
         }
       );
     } else {

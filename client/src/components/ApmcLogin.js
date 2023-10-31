@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 
-const Login = (roleState, setRole) => {
+const APMCLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,16 +23,16 @@ const Login = (roleState, setRole) => {
       }),
     });
     const data = await res.json();
-    Cookies.set("token", data.token);
-    const role = jwtDecode(data.token).role;
+
     // setRole(role);
     if (data.error) {
       // window.alert("Invalid Credentials");
       toast.error("Invalid Credentials");
     } else {
-      // window.alert("Login Successful");
+      Cookies.set("token", data.token);
+      Cookies.set("role", "apmc");
       toast.success("Login Successful");
-      navigate("/dataDisplay");
+      navigate("/apmc/dashboard");
     }
   };
 
@@ -40,7 +40,7 @@ const Login = (roleState, setRole) => {
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 mt-3">
-          <h2>Login</h2>
+          <h2>APMC Login</h2>
           <form method="POST" className="login-form mt-4">
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
@@ -96,4 +96,4 @@ const Login = (roleState, setRole) => {
   );
 };
 
-export default Login;
+export default APMCLogin;
