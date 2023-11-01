@@ -11,7 +11,7 @@ import Contact from "./components/Contact";
 import PageNotFound from "./components/PageNotFound";
 import About from "./components/About";
 import "react-toastify/dist/ReactToastify.css";
-import Farmerdata from "./components/DataDisplay";
+import Farmerdata from "./components/ApmcDashboard";
 import Form from "./components/Form";
 import Footer from "./components/Footer";
 import Cookies from "js-cookie";
@@ -28,6 +28,8 @@ import VendorRegister from "./components/VendorRegister";
 import ApmcList from "./components/ApmcList";
 import ApmcTomatoReq from "./components/ApmcTomatoReq";
 import VendorTomatoReq from "./components/VendorTomatoReq";
+import RequestOtherApmc from "./components/RequestOtherApmc";
+import ApmcTomatoReqList from "./components/ApmcTomatoReqList";
 
 const App = () => {
   return (
@@ -58,6 +60,8 @@ const App = () => {
         <Route path="/apmc/addSupply" element={<Form />} />
         <Route path="/apmc/dashboard" element={<Farmerdata />} />
         <Route path="/apmc/tomatoRequest" element={<ApmcTomatoReq />} />
+        <Route path="/apmc/requestOtherApmc" element={<RequestOtherApmc />} />
+        <Route path="/apmc/tomatoRequested" element={<ApmcTomatoReqList />} />
 
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -67,8 +71,11 @@ const App = () => {
 
         {/* Vendor Routes */}
         <Route exact path="/apmc/list" element={<ApmcList />} />
-        <Route exact path="/vendor/tomatoRequested" element={<VendorTomatoReq />} />
-      
+        <Route
+          exact
+          path="/vendor/tomatoRequested"
+          element={<VendorTomatoReq />}
+        />
       </Routes>
       <Footer />
     </>

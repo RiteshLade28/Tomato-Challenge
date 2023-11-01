@@ -16,6 +16,7 @@ import {
   TableCell,
   Select,
   CardMedia,
+  Button,
 } from "@material-ui/core";
 import {
   Card,
@@ -25,6 +26,7 @@ import {
   IconButton,
   Paper,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 // import * as XLSX from "xlsx";
 // import { saveAs } from "file-saver";
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 const DataDisplay = () => {
   const classes = useStyles();
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -96,29 +99,6 @@ const DataDisplay = () => {
     }
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `/get-tomato-data?selectedOption=${apmcName}`
-      );
-
-      if (response.ok) {
-        const jsonData = await response.json();
-
-        // Format the date field in the fetched data
-        const formattedData = jsonData.map((item) => ({
-          ...item,
-          todaydate: formatDateString(item.todaydate),
-        }));
-        setData(formattedData);
-      } else {
-        console.error("Error fetching data");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleDelete = async (id) => {
     try {
       // Make a DELETE request to the backend to delete the data
@@ -151,13 +131,26 @@ const DataDisplay = () => {
             <Typography variant="h4" align="center" gutterBottom>
               {apmcName} Dashboard
             </Typography>
+            <Typography variant="h4" align="left" gutterBottom>
+              Data for{" "}
+              {new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+                new Date()
+              )}
+            </Typography>
+            <Button
+              onClick={() => navigate("/apmc/requestOtherApmc")}
+              variant="contained"
+              color="primary"
+            >
+              Request Other APMC
+            </Button>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Card className={classes.summaryItem}>
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    Σ
+                    Q
                   </Avatar>
                 }
               />
@@ -165,7 +158,24 @@ const DataDisplay = () => {
                 <Typography variant="h6" gutterBottom>
                   Total Supply
                 </Typography>
-                <Typography variant="h4">15</Typography>
+                <Typography variant="h4">600</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card className={classes.summaryItem}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    Q
+                  </Avatar>
+                }
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Total Demand
+                </Typography>
+                <Typography variant="h4">800</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -180,9 +190,9 @@ const DataDisplay = () => {
               />
               <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  Total Demand
+                  Total Farmers
                 </Typography>
-                <Typography variant="h4">40</Typography>
+                <Typography variant="h4">10</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -192,23 +202,6 @@ const DataDisplay = () => {
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                     Σ
-                  </Avatar>
-                }
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Total Farmers
-                </Typography>
-                <Typography variant="h4">1000</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card className={classes.summaryItem}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    q
                   </Avatar>
                 }
               />

@@ -111,14 +111,14 @@ const DataDisplay = () => {
               <thead>
                 <tr>
                   <th>Serial No</th>
-                  <th>Farmer Name</th>
+                  <th>APMC Name</th>
                   <th>Contact</th>
                   <th>Date</th>
                   {/* <th>Time</th> */}
                   <th>Weight</th>
                   <th>Trade Price</th>
-                  <th>Verify</th>
-                  <th>Delete</th>
+                  {/* <th>Verify</th>
+                  <th>Delete</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -131,25 +131,6 @@ const DataDisplay = () => {
                     {/* <td>{item.currentTime}</td> */}
                     <td>{item.weight}</td>
                     <td>{item.price}</td>
-                    <td>
-                      <button
-                        className="btn btn-success"
-                        onClick={() =>
-                          toast.success("Data Submitted Successfully")
-                        }
-                      >
-                        Submit
-                      </button>
-                    </td>
-                    <td>
-                      {/* Add the delete button */}
-                      <button
-                        onClick={() => handleDelete(item._id)}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>

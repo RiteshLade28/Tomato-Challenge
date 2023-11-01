@@ -121,14 +121,15 @@ const Navbar = () => {
             ) : role === "apmc" ? (
               <>
                 <li></li>
-                <li>
-                  <NavLink className="nav-link me-3" to="/apmc/addSupply">
-                    Add Supply
-                  </NavLink>
-                </li>
+
                 <li>
                   <NavLink className="nav-link me-3" to="/apmc/dashboard">
                     Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/addSupply">
+                    Add Supply
                   </NavLink>
                 </li>
                 <li>
@@ -136,6 +137,42 @@ const Navbar = () => {
                     Requests
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/tomatoRequested">
+                    Requested
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link me-3"
+                    to="/"
+                    onClick={() => {
+                      Cookies.remove("token");
+                      Cookies.set("role", "defaultRole");
+                      // navigate("/");
+                    }}
+                  >
+                    Logout
+                  </NavLink>
+                </li>
+              </>
+            ) : role === "vendor" ? (
+              <>
+                <li></li>
+                <li>
+                  <NavLink className="nav-link me-3" to="/apmc/list">
+                    APMCs
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className="nav-link me-3"
+                    to="/vendor/tomatoRequested"
+                  >
+                    Tomato Requested
+                  </NavLink>
+                </li>
+
                 <li className="nav-item">
                   <NavLink
                     className="nav-link me-3"

@@ -27,8 +27,8 @@ const Login = async (req, res) => {
           id: vendorLogin._id,
           name: vendorLogin.name, // Add the name to the payload
           phone: vendorLogin.phone, // Add the phone to the payload
-          role: "vendor",
         },
+        role: "vendor",
       };
 
       // Sign the token
