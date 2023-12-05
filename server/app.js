@@ -41,16 +41,31 @@ const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
 passport.use(jwtStrategy);
 
 //Router Files
-app.use("/api/auth/", require("./router/AuthRouter"));
+app.use("/api/auth/", require("./router/Auth"));
 app.use(
-  "/api/tomatoData/",
+  "/api/transactions/",
   passport.authenticate("jwt", { session: false }),
-  require("./router/TomatoData")
+  require("./router/Transactions")
 );
 app.use(
-  "/api/apmcData/",
+  "/api/request/",
   passport.authenticate("jwt", { session: false }),
-  require("./router/ApmcRouter")
+  require("./router/Requests")
+);
+app.use(
+  "/api/payment/",
+  passport.authenticate("jwt", { session: false }),
+  require("./router/Payment")
+);
+app.use(
+  "/api/fullfill/",
+  passport.authenticate("jwt", { session: false }),
+  require("./router/FullFill")
+);
+app.use(
+  "/api/stats/",
+  passport.authenticate("jwt", { session: false }),
+  require("./router/Statistics")
 );
 
 app.listen(PORT, () => {
