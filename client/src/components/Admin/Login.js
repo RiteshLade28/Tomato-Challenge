@@ -87,6 +87,9 @@ const AdminLogin = () => {
           <p className="mt-3">
             New Admin? <NavLink to="/admin/register">Register here</NavLink>
           </p>
+          <p className="mt-3">
+            Forget Password? <NavLink to="">Reset</NavLink>
+          </p>
         </div>
       </div>
       <ToastContainer />

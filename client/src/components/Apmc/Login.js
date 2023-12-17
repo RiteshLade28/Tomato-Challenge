@@ -88,6 +88,9 @@ const APMCLogin = () => {
           <p className="mt-3">
             New APMC? <NavLink to="/apmc/register">Register here</NavLink>
           </p>
+          <p className="mt-3">
+            Forget Password? <NavLink to="">Reset</NavLink>
+          </p>
         </div>
       </div>
       <ToastContainer />

@@ -68,7 +68,7 @@ const Login = () => {
                 maxLength="10"
                 pattern="[0-9]{10}"
                 required
-              />  
+              />
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
@@ -99,6 +99,9 @@ const Login = () => {
           </form>
           <p className="mt-3">
             New user? <NavLink to="/signup">Register here</NavLink>
+          </p>
+          <p className="mt-3">
+            Forget Password? <NavLink to="">Reset</NavLink>
           </p>
         </div>
       </div>

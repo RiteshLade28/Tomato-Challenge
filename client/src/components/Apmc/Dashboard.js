@@ -281,7 +281,15 @@ const DataDisplay = () => {
           setData(jsonData.tomatoData);
           setTotalSupply(jsonData.totalTomatoInApmc);
           setTotalDemand(jsonData.totalTomatoRequestedToday);
-          // ... (set other state variables)
+          setTotalFarmers(jsonData.totalUniqueFarmers);
+          setTotalVendors(jsonData.totalVendorsRequesting);
+          setTotalApmcRequesting(jsonData.totalApmcRequesting);
+          setStockForApmc(jsonData.stockForApmc);
+          setVendorFullfilledTransactionsCount(
+            jsonData.vendorFullfilledTransactionsCount
+          );
+          setVendorPaidTransactionsCount(jsonData.vendorPaidTransactionsCount);
+
           setLoading(false); // Set loading to false once data is loaded
         })
         .catch((error) => {
